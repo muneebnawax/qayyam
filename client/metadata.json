@@ -1,0 +1,7 @@
+{
+  "name": "Qayam",
+  "description": "A premium student housing and hostel discovery platform for Peshawar, featuring curated listings and a comprehensive warden management portal.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

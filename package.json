@@ -1,0 +1,13 @@
+{
+  "name": "qayam",
+  "version": "1.0.0",
+  "description": "Qayam unified deployment setup",
+  "scripts": {
+    "install-client": "npm install --prefix client",
+    "install-backend": "npm install --prefix backend",
+    "install": "npm run install-client && npm run install-backend",
+    "build-client": "npm run build --prefix client",
+    "build": "npm run build-client",
+    "start": "node backend/server.js"
+  }
+}
