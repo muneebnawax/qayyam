@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import HostelForm from '../components/HostelForm';
 import { cn } from '@/src/lib/utils';
+import { API_BASE_URL } from '../apiConfig';
 
 export default function WardenPortal() {
   const [dynamicListings, setDynamicListings] = useState([]);
@@ -16,14 +17,14 @@ export default function WardenPortal() {
     if (!token) return navigate('/login');
 
     try {
-      const meRes = await fetch('http://localhost:5000/api/auth/me', {
+      const meRes = await fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const meData = await meRes.json();
       if (!meData.success) throw new Error('Not verified');
 
       const wardenId = meData.data._id;
-      const hostelsRes = await fetch(`http://localhost:5000/api/hostels?warden=${wardenId}`);
+      const hostelsRes = await fetch(`${API_BASE_URL}/api/hostels?warden=${wardenId}`);
       const hostelsData = await hostelsRes.json();
 
       if (hostelsData.success) {
@@ -43,7 +44,7 @@ export default function WardenPortal() {
     if (!window.confirm('Are you sure you want to delete this listing? This action cannot be undone.')) return;
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/hostels/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/hostels/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

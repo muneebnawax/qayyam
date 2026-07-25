@@ -12,8 +12,8 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
@@ -49,12 +49,12 @@ const faqs = [
 export default function Home() {
   const [allHostels, setAllHostels] = useState([]);
   const [dynamicHostels, setDynamicHostels] = useState([]);
-  
+
   // Smart Search States
   const [cityFilter, setCityFilter] = useState("All Cities");
   const [locationFilter, setLocationFilter] = useState("All Areas");
   const [genderFilter, setGenderFilter] = useState("All Genders");
-  
+
   const [loading, setLoading] = useState(true);
   const [locating, setLocating] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
@@ -62,7 +62,7 @@ export default function Home() {
   const fetchHostels = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/hostels`);
+      const res = await fetch(`${API_BASE_URL}/api/hostels`);
       const data = await res.json();
       if (data.success) {
         setAllHostels(data.data);
@@ -100,12 +100,12 @@ export default function Home() {
       alert("Geolocation is not supported by your browser");
       return;
     }
-    
+
     setLocating(true);
     navigator.geolocation.getCurrentPosition((position) => {
       const userLat = position.coords.latitude;
       const userLng = position.coords.longitude;
-      
+
       const hostelsWithDistance = allHostels.map(hostel => {
         if (!hostel.coordinates || !hostel.coordinates.lat || !hostel.coordinates.lng) {
           return { ...hostel, distance: Infinity };
@@ -113,9 +113,9 @@ export default function Home() {
         const dist = getDistance(userLat, userLng, hostel.coordinates.lat, hostel.coordinates.lng);
         return { ...hostel, distance: dist };
       });
-      
+
       hostelsWithDistance.sort((a, b) => a.distance - b.distance);
-      
+
       setDynamicHostels(hostelsWithDistance);
       setLocating(false);
       window.scrollTo({ top: 800, behavior: 'smooth' });
@@ -212,14 +212,14 @@ export default function Home() {
                 Search
               </button>
             </motion.div>
-            
-            <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               transition={{ delay: 0.5 }}
-               className="pt-4"
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="pt-4"
             >
-              <button 
+              <button
                 onClick={handleNearMe}
                 disabled={locating}
                 className="group flex items-center gap-2 px-8 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-bold text-sm hover:bg-white/20 transition-all active:scale-95 border border-white/20 shadow-lg">
@@ -261,7 +261,7 @@ export default function Home() {
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                    
+
                     <div className="absolute top-4 left-4 flex gap-2 flex-wrap max-w-[80%]">
                       <span className="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm">
                         {hostel.gender}
@@ -270,15 +270,15 @@ export default function Home() {
                         NO COMMISSION
                       </span>
                     </div>
-                    
+
                     <div className="absolute bottom-4 left-4 flex gap-2">
                       <h3 className="text-xl font-black text-white leading-tight drop-shadow-md flex items-center gap-2">
-                         {hostel.name}
-                         <BadgeCheck className="w-5 h-5 text-blue-400" />
+                        {hostel.name}
+                        <BadgeCheck className="w-5 h-5 text-blue-400" />
                       </h3>
                     </div>
                   </div>
-                  
+
                   <div className="p-8 space-y-6">
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col">
@@ -287,7 +287,7 @@ export default function Home() {
                         </p>
                         {hostel.distance !== undefined && hostel.distance !== Infinity && (
                           <p className="text-[10px] uppercase font-bold text-tertiary tracking-widest mt-1 ml-5">
-                             {(hostel.distance).toFixed(1)} km away
+                            {(hostel.distance).toFixed(1)} km away
                           </p>
                         )}
                       </div>
@@ -296,7 +296,7 @@ export default function Home() {
                         <span className="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mt-1 block">per month</span>
                       </div>
                     </div>
-                    
+
                     <div className="flex gap-3 flex-wrap h-16 overflow-hidden">
                       {hostel.amenities && hostel.amenities.slice(0, 3).map((amenity, i) => {
                         const IconComponent = amenityIconMap[amenity] || amenityIconMap['Default'];
@@ -334,7 +334,7 @@ export default function Home() {
               <h2 className="text-4xl font-headline font-black text-on-surface">Why Choose Qayam?</h2>
               <p className="text-on-surface-variant max-w-2xl mx-auto">Skip the hassle of brokers and untrustworthy listings. We provide a transparent environment engineered for student success.</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-surface-container-low p-10 rounded-[3rem] editorial-shadow text-center space-y-6">
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto text-primary">
@@ -366,22 +366,22 @@ export default function Home() {
           <div className="max-w-7xl mx-auto flex flex-col items-center">
             <span className="text-primary font-bold tracking-widest uppercase text-xs mb-3">Simple Process</span>
             <h2 className="text-4xl font-headline font-black text-on-surface mb-16 text-center">How to Find Your Best Hostel</h2>
-            
+
             <div className="flex flex-col md:flex-row gap-8 w-full relative">
               <div className="hidden md:block absolute top-[40%] left-[10%] right-[10%] h-1 bg-surface-container-high z-0"></div>
-              
+
               <div className="flex-1 flex flex-col items-center text-center space-y-4 z-10 relative">
                 <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-black text-2xl shadow-xl shadow-primary/20 mb-4">1</div>
                 <h3 className="text-xl font-bold">Search & Filter</h3>
                 <p className="text-on-surface-variant text-sm max-w-[200px]">Use our smart search or GPS to locate verified hostels matching your specific lifestyle needs.</p>
               </div>
-              
+
               <div className="flex-1 flex flex-col items-center text-center space-y-4 z-10 relative">
                 <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center font-black text-2xl shadow-xl shadow-primary/20 mb-4">2</div>
                 <h3 className="text-xl font-bold">Review & Verify</h3>
                 <p className="text-on-surface-variant text-sm max-w-[200px]">Check out amenities, distances, and ensure the property carries our premium verified badge.</p>
               </div>
-              
+
               <div className="flex-1 flex flex-col items-center text-center space-y-4 z-10 relative">
                 <div className="w-16 h-16 bg-tertiary text-white rounded-full flex items-center justify-center font-black text-2xl shadow-xl shadow-tertiary/20 mb-4">3</div>
                 <h3 className="text-xl font-bold">Contact Warden</h3>
@@ -426,11 +426,11 @@ export default function Home() {
               <span className="text-primary font-bold tracking-widest uppercase text-xs">Help Center</span>
               <h2 className="text-4xl font-headline font-black text-on-surface">Frequently Asked Questions</h2>
             </div>
-            
+
             <div className="space-y-4">
               {faqs.map((faq, i) => (
                 <div key={i} className="bg-surface-container-lowest rounded-2xl border border-surface-container-high overflow-hidden">
-                  <button 
+                  <button
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
                     className="w-full px-8 py-6 text-left flex justify-between items-center bg-surface-container-lowest hover:bg-surface-container-low transition-colors"
                   >
@@ -439,7 +439,7 @@ export default function Home() {
                   </button>
                   <AnimatePresence>
                     {openFaq === i && (
-                      <motion.div 
+                      <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}

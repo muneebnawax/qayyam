@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, CloudUpload, Check, X, MapPin } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { API_BASE_URL } from '../apiConfig';
 
 const AMENITIES_LIST = ['WiFi', 'AC', 'Geyser', 'Laundry', 'Parking', 'Kitchen', 'Mess', 'UPS/Generator', 'CCTV', 'Study Room'];
 
@@ -104,7 +105,7 @@ export default function HostelForm({ editingId, initialData, onSuccess, onCancel
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/auth/me', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const meData = await res.json();
@@ -138,8 +139,8 @@ export default function HostelForm({ editingId, initialData, onSuccess, onCancel
       };
 
       const url = editingId 
-        ? `http://localhost:5000/api/hostels/${editingId}`
-        : 'http://localhost:5000/api/hostels';
+        ? `${API_BASE_URL}/api/hostels/${editingId}`
+        : `${API_BASE_URL}/api/hostels`;
         
       const method = editingId ? 'PUT' : 'POST';
 
