@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { cn } from '@/src/lib/utils';
+import { API_BASE_URL } from '../apiConfig';
 
 // Helper to calculate distance in km using Haversine formula
 const getDistance = (lat1, lon1, lat2, lon2) => {
